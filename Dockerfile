@@ -1,12 +1,8 @@
-FROM node:24-bookworm-slim
+FROM node:24-trixie-slim
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential python3 \
-    && npm_config_build_from_source=true npm ci --omit=dev \
-    && apt-get purge -y --auto-remove build-essential python3 \
-    && rm -rf /var/lib/apt/lists/*
+RUN npm ci --omit=dev
 COPY . .
 
 ENV NODE_ENV=production \
