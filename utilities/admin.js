@@ -2,6 +2,10 @@ import bcrypt from 'bcrypt';
 import { User } from '../models/index.js';
 
 export async function createDefaultAdmin() {
+    if (!process.env.ADMIN_PASSWORD) {
+        return null;
+    }
+
     const admin = await User.findOne({ where: { email: 'admin@movies.com' } });
 
     if (!admin) {
@@ -14,4 +18,6 @@ export async function createDefaultAdmin() {
             isAdmin: true
         });
     }
+
+    return admin;
 };
